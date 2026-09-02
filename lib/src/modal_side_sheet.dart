@@ -84,21 +84,6 @@ Future<T?> showModalSideSheet<T extends Object?>(
     RouteSettings? routeSettings,
     bool withCloseControll = true,
     bool ignoreAppBar = true}) {
-  var of = MediaQuery.of(context);
-  var platform = Theme.of(context).platform;
-  if (width == null) {
-    if (platform == TargetPlatform.android || platform == TargetPlatform.iOS) {
-      width = of.size.width * 0.6;
-    } else {
-      width = of.size.width / 4;
-    }
-  }
-  double exceptionalheight = !ignoreAppBar
-      ? Scaffold.of(context).hasAppBar
-          ? Scaffold.of(context).appBarMaxHeight!
-          : 0
-      : 0;
-  double height = of.size.height - exceptionalheight;
   assert(!barrierDismissible || barrierLabel != null);
   return showGeneralDialog(
     barrierDismissible: barrierDismissible,
@@ -108,7 +93,22 @@ Future<T?> showModalSideSheet<T extends Object?>(
     useRootNavigator: useRootNavigator,
     routeSettings: routeSettings,
     context: context,
-    pageBuilder: (BuildContext context, _, __) {
+    pageBuilder: (BuildContext ctx, _, __) {
+      var of = MediaQuery.of(context);
+      var platform = Theme.of(context).platform;
+      if (width == null) {
+        if (platform == TargetPlatform.android || platform == TargetPlatform.iOS) {
+          width = of.size.width * 0.6;
+        } else {
+          width = of.size.width / 4;
+        }
+      }
+      double exceptionalheight = !ignoreAppBar
+          ? Scaffold.of(context).hasAppBar
+              ? Scaffold.of(context).appBarMaxHeight!
+              : 0
+          : 0;
+      double height = of.size.height - exceptionalheight;
       return Align(
         alignment: Alignment.bottomRight,
         child: Material(
