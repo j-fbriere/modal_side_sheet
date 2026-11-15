@@ -83,7 +83,8 @@ Future<T?> showModalSideSheet<T extends Object?>(
     bool useRootNavigator = true,
     RouteSettings? routeSettings,
     bool withCloseControll = true,
-    bool ignoreAppBar = true}) {
+    bool ignoreAppBar = true,
+    bool animateIn = true}) {
   assert(!barrierDismissible || barrierLabel != null);
   return showGeneralDialog(
     barrierDismissible: barrierDismissible,
@@ -127,11 +128,11 @@ Future<T?> showModalSideSheet<T extends Object?>(
             )),
       );
     },
-    transitionBuilder: (_, animation, __, child) {
+    transitionBuilder: animateIn ? (_, animation, __, child) {
       return SlideTransition(
           child: child,
           position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
               .animate(animation));
-    },
+    } : null,
   );
 }
