@@ -128,11 +128,13 @@ Future<T?> showModalSideSheet<T extends Object?>(
             )),
       );
     },
-    transitionBuilder: animateIn ? (_, animation, __, child) {
+    transitionBuilder: (_, animation, __, child) {
+      // Without animateIn, the side sheet is displayed in place; it still slides out when closed
+      bool inPlace = !animateIn && animation.status != AnimationStatus.reverse;
       return SlideTransition(
           child: child,
           position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-              .animate(animation));
-    } : null,
+              .animate(inPlace ? kAlwaysCompleteAnimation : animation));
+    },
   );
 }
